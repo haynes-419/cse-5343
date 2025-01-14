@@ -25,7 +25,7 @@ terminal INT, DOUBLE, RETURN, IF, ELSE;
 /* TODO: add more operators */
 
 /* punctuators */
-terminal SEMICOLON, LPAREN, RPAREN, LBRACK, RBRACK, LBRACE, RBRACE, ASSIGN, PLUS, MUL, SUB, DIVIDE, MODULO;
+terminal SEMICOLON, LPAREN, RPAREN, LBRACK, RBRACK, LBRACE, RBRACE, ASSIGN, PLUS, MUL, SUB, DIVIDE, MODULO, PLUSASSIGN, SUBASSIGN, MULASSIGN, DIVIDEASSIGN, MODULOASSIGN;
 /* numeric literals */
 terminal Integer INTCONST;
 terminal Double  DOUBLECONST;
@@ -42,7 +42,7 @@ non terminal Expr expr;
 non terminal List<Expr> arrayDim;
 non terminal BinaryExpr binaryExpr;
 
-precedence right ASSIGN, PLUSASSIGN, SUBASSIGN, MULASSIGN, DIVIDEASSIN, MODULOASSIGN;
+precedence right ASSIGN, PLUSASSIGN, SUBASSIGN, MULASSIGN, DIVIDEASSIGN, MODULOASSIGN;
 precedence left PLUS, SUB;
 precedence left MUL, DIVIDE, MODULO;
 

@@ -5,6 +5,14 @@ public class BinaryExpr extends Expr {
     public static final int PLUS = 1;
     public static final int MUL = 2;
     public static final int ASSIGN = 3;
+	public static final int SUB = 4;
+	public static final int DIVIDE = 5;
+	public static final int MODULO = 6;
+    public static final int PLUSASSIGN = 7;
+    public static final int MULASSIGN = 8;
+	public static final int SUBASSIGN = 9;
+	public static final int DIVIDEASSIGN = 10;
+	public static final int MODULOASSIGN = 11;
     public final Expr expr1, expr2;
     public final int op;
     public BinaryExpr(Expr e1, int oper, Expr e2) {

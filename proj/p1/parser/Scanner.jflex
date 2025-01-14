@@ -48,8 +48,8 @@ import compiler.Compiler;
  * "other implementation-defined characters" mentioned in Section
  * 6.4.2.1.
  */
-Ident = {identNonDigit} | ({Ident} {identNonDigit}) | ({Ident} {digit})
-IdentNonDigit = {nondigit} //No definition for "universal-character-name" and "other implementation-defined characters"
+Ident = {IdentNonDigit}+ {Digit}*
+IdentNonDigit = {Nondigit} //No definition for "universal-character-name" and "other implementation-defined characters"
 Nondigit = [A-z_]
 Digit = [0-9]
 
@@ -64,12 +64,11 @@ Digit = [0-9]
 
 
 IntLiteral = {DecimalConst} | {OctalConst} | {HexConst}
-DecimalConst = {NonZeroDigit} | ({DecimalConst} {Digit})
-OctalConst = 0 | ({OctalConst} {OctalDigit})
-HexConst = ({HexPrefix} {HexDigit}) | ({HexConst} {HexDigit})
+DecimalConst = {NonZeroDigit} {Digit}+
+OctalConst = 0 {OctalDigit}+
+HexConst = {HexPrefix} {HexDigit}+
 
-HexPrefix = [0x] | [0X]
-
+HexPrefix = 0x | 0X
 NonZeroDigit = [1-9]
 OctalDigit = [0-7]
 HexDigit = [0-9A-Fa-f]
@@ -90,10 +89,10 @@ HexFloatConst = ({HexPrefix} {HexFracConst} {BinaryExpPart} {FloatSuffix}?) | ({
 FracConst = ({DigitSeq}? \. {DigitSeq}) | ({DigitSeq} \.) 
 ExpoPart = ([e] {Sign}? {DigitSeq}) | ([E] {Sign}? {DigitSeq})
 Sign = [\+] | [\-]
-DigitSeq = {Digit} | ({DigitSeq} {Digit})
+DigitSeq = {Digit}+
 HexFracConst = ({HexDigitSeq} \. {HexDigitSeq}) | ({HexDigitSeq} \.)
 BinaryExpPart = ([p] {Sign}? {DigitSeq}) | ([P] {Sign}? {DigitSeq})
-HexDigitSeq = {HexDigit} | ({HexDigitSeq} {HexDigit})
+HexDigitSeq = {HexDigit}+
 FloatSuffix = [flFL]
 
 
