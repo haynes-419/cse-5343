@@ -17,8 +17,16 @@ public class BinaryExpr extends Expr {
 	expr1.print(ps);
 	switch (op) {
 	case PLUS: ps.print("+"); break;
+	case SUB: ps.print("-"); break;
 	case MUL: ps.print("*"); break;
+	case DIVIDE: ps.print("/"); break;
+	case MODULO: ps.print("%"); break;
 	case ASSIGN: ps.print("="); break;
+	case PLUSASSIGN: ps.print("+="); break;
+	case SUBASSIGN: ps.print("-="); break;
+	case MULASSIGN: ps.print("*="); break;
+	case DIVIDEASSIGN: ps.print("/="); break;
+	case MODULOASSIGN: ps.print("%="); break;
 	}
 	expr2.print(ps);
 	ps.print(")");

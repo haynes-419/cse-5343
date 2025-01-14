@@ -25,7 +25,7 @@ terminal INT, DOUBLE, RETURN, IF, ELSE;
 /* TODO: add more operators */
 
 /* punctuators */
-terminal SEMICOLON, LPAREN, RPAREN, LBRACK, RBRACK, LBRACE, RBRACE, ASSIGN, PLUS, MUL;
+terminal SEMICOLON, LPAREN, RPAREN, LBRACK, RBRACK, LBRACE, RBRACE, ASSIGN, PLUS, MUL, SUB, DIVIDE, MODULO;
 /* numeric literals */
 terminal Integer INTCONST;
 terminal Double  DOUBLECONST;
@@ -42,9 +42,9 @@ non terminal Expr expr;
 non terminal List<Expr> arrayDim;
 non terminal BinaryExpr binaryExpr;
 
-precedence right ASSIGN;
-precedence left PLUS;
-precedence left MUL;
+precedence right ASSIGN, PLUSASSIGN, SUBASSIGN, MULASSIGN, DIVIDEASSIN, MODULOASSIGN;
+precedence left PLUS, SUB;
+precedence left MUL, DIVIDE, MODULO;
 
 precedence left ELSE; // resolve "dangling else" ambiguity
 start with program;
@@ -87,8 +87,16 @@ arrayDim ::= LBRACK expr:e RBRACK {: RESULT = new LinkedList<Expr>(); RESULT.add
 ;
 /* TODO: add more operators */
 binaryExpr ::= expr:e1 PLUS expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.PLUS, e2); :}
+             | expr:e1 SUB expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.SUB, e2); :}
              | expr:e1 MUL expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.MUL, e2); :}
-             | expr:e1 ASSIGN expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.ASSIGN, e2); :}              
+             | expr:e1 DIVIDE expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.DIVIDE, e2); :}
+             | expr:e1 MODULO expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.MODULO, e2); :}
+             | expr:e1 ASSIGN expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.ASSIGN, e2); :}   
+             | expr:e1 PLUSASSIGN expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.PLUSASSIGN, e2); :}   
+             | expr:e1 SUBASSIGN expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.SUBASSIGN, e2); :}                
+             | expr:e1 MULASSIGN expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.MULASSIGN, e2); :}   
+             | expr:e1 DIVIDEASSIGN expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.DIVIDEASSIGN, e2); :}   
+             | expr:e1 MODULOASSIGN expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.MODULOASSIGN, e2); :}   
 ;
 
 

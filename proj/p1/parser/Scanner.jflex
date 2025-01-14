@@ -48,8 +48,10 @@ import compiler.Compiler;
  * "other implementation-defined characters" mentioned in Section
  * 6.4.2.1.
  */
-
-Ident = [a-z]
+Ident = {identNonDigit} | ({Ident} {identNonDigit}) | ({Ident} {digit})
+IdentNonDigit = {nondigit} //No definition for "universal-character-name" and "other implementation-defined characters"
+Nondigit = [A-z_]
+Digit = [0-9]
 
 /* Integer literals: TODO - handle integer literals as described in
  * Section 6.4.4.1 of the C spec. For simplicity, do NOT
@@ -60,7 +62,17 @@ Ident = [a-z]
  * correctly the matched literal. Assume the value fits in a Java int.
  */
 
-IntLiteral = 0 | [1-9][0-9]*
+
+IntLiteral = {DecimalConst} | {OctalConst} | {HexConst}
+DecimalConst = {NonZeroDigit} | ({DecimalConst} {Digit})
+OctalConst = 0 | ({OctalConst} {OctalDigit})
+HexConst = ({HexPrefix} {HexDigit}) | ({HexConst} {HexDigit})
+
+HexPrefix = [0x] | [0X]
+
+NonZeroDigit = [1-9]
+OctalDigit = [0-7]
+HexDigit = [0-9A-Fa-f]
 
 /* Floating point literals: TODO - handle floating point literals as 
  * described in Section 6.4.4.2 of the C spec. For
@@ -72,7 +84,18 @@ IntLiteral = 0 | [1-9][0-9]*
  * Assume the value fits in a Java double.
  */        
 
-DoubleLiteral = [0-9]+ \. [0-9]*
+DoubleLiteral = {DecimalFloatConst} | {HexFloatConst}
+DecimalFloatConst = ({FracConst} {ExpoPart}? {FloatSuffix}?) | ({DigitSeq} {ExpoPart} {FloatSuffix}?) 
+HexFloatConst = ({HexPrefix} {HexFracConst} {BinaryExpPart} {FloatSuffix}?) | ({HexPrefix} {HexDigitSeq} {BinaryExpPart} {FloatSuffix})
+FracConst = ({DigitSeq}? \. {DigitSeq}) | ({DigitSeq} \.) 
+ExpoPart = ([e] {Sign}? {DigitSeq}) | ([E] {Sign}? {DigitSeq})
+Sign = [\+] | [\-]
+DigitSeq = {Digit} | ({DigitSeq} {Digit})
+HexFracConst = ({HexDigitSeq} \. {HexDigitSeq}) | ({HexDigitSeq} \.)
+BinaryExpPart = ([p] {Sign}? {DigitSeq}) | ([P] {Sign}? {DigitSeq})
+HexDigitSeq = {HexDigit} | ({HexDigitSeq} {HexDigit})
+FloatSuffix = [flFL]
+
 
 /*** TODO END ***/
 
@@ -109,6 +132,14 @@ white_space = {new_line} | [ \t\f]
 "="               { return symbol("=",  ASSIGN); }
 "+"               { return symbol("+",  PLUS); }
 "*"               { return symbol("*",  MUL); }
+"-"               { return symbol("-",  SUB); }
+"/"               { return symbol("/",  DIVIDE); }
+"%"               { return symbol("%",  MODULO); }
+"+="              { return symbol("+=",  PLUSASSIGN); }
+"-="              { return symbol("-=",  SUBASSIGN); }
+"*="              { return symbol("*=",  MULASSIGN); }
+"/="              { return symbol("/=",  DIVIDEASSIGN); }
+"%="              { return symbol("%=",  MODULOASSIGN); }
 
 /*** TODO END ***/
 
