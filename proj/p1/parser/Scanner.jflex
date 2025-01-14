@@ -64,7 +64,7 @@ Digit = [0-9]
 
 
 IntLiteral = {DecimalConst} | {OctalConst} | {HexConst}
-DecimalConst = {NonZeroDigit} {Digit}+
+DecimalConst = {NonZeroDigit} {Digit}*
 OctalConst = 0 {OctalDigit}+
 HexConst = {HexPrefix} {HexDigit}+
 
