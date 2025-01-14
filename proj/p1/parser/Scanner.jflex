@@ -64,8 +64,8 @@ Digit = [0-9]
 
 
 IntLiteral = {DecimalConst} | {OctalConst} | {HexConst}
-DecimalConst = {NonZeroDigit} {Digit}*
-OctalConst = 0 {OctalDigit}+
+DecimalConst = {NonZeroDigit} {Digit}* //At least one nonleading 0, zero+ digits
+OctalConst = 0 {OctalDigit}* //Octal Can be Just 0 
 HexConst = {HexPrefix} {HexDigit}+
 
 HexPrefix = 0x | 0X
