@@ -48,7 +48,7 @@ import compiler.Compiler;
  * "other implementation-defined characters" mentioned in Section
  * 6.4.2.1.
  */
-Ident = {IdentNonDigit}+ {Digit}*
+Ident = {IdentNonDigit}+ ({Digit} | {Nondigit})*
 IdentNonDigit = {Nondigit} //No definition for "universal-character-name" and "other implementation-defined characters"
 Nondigit = [A-z_]
 Digit = [0-9]
@@ -61,7 +61,6 @@ Digit = [0-9]
  * (later in this file) calls Integer.decode,  which should process 
  * correctly the matched literal. Assume the value fits in a Java int.
  */
-
 
 IntLiteral = {DecimalConst} | {OctalConst} | {HexConst}
 DecimalConst = {NonZeroDigit} {Digit}* //At least one nonleading 0, zero+ digits
@@ -93,7 +92,7 @@ DigitSeq = {Digit}+
 HexFracConst = ({HexDigitSeq} \. {HexDigitSeq}) | ({HexDigitSeq} \.)
 BinaryExpPart = ([p] {Sign}? {DigitSeq}) | ([P] {Sign}? {DigitSeq})
 HexDigitSeq = {HexDigit}+
-FloatSuffix = [flFL]
+FloatSuffix = [fF]
 
 
 /*** TODO END ***/
