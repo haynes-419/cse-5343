@@ -84,13 +84,13 @@ HexDigit = [0-9A-Fa-f]
 
 DoubleLiteral = {DecimalFloatConst} | {HexFloatConst}
 DecimalFloatConst = ({FracConst} {ExpoPart}? {FloatSuffix}?) | ({DigitSeq} {ExpoPart} {FloatSuffix}?) 
-HexFloatConst = ({HexPrefix} {HexFracConst} {BinaryExpPart} {FloatSuffix}?) | ({HexPrefix} {HexDigitSeq} {BinaryExpPart} {FloatSuffix})
+HexFloatConst = ({HexPrefix} {HexFracConst} {BinaryExpPart} {FloatSuffix}?) | ({HexPrefix} {HexDigitSeq} {BinaryExpPart} {FloatSuffix}?)
 FracConst = ({DigitSeq}? \. {DigitSeq}) | ({DigitSeq} \.) 
 ExpoPart = ([e] {Sign}? {DigitSeq}) | ([E] {Sign}? {DigitSeq})
 Sign = [\+] | [\-]
 DigitSeq = {Digit}+
-HexFracConst = ({HexDigitSeq} \. {HexDigitSeq}) | ({HexDigitSeq} \.)
-BinaryExpPart = ([p] {Sign}? {DigitSeq}) | ([P] {Sign}? {DigitSeq})
+HexFracConst = ({HexDigitSeq}? \. {HexDigitSeq}) | ({HexDigitSeq} \.)
+BinaryExpPart = ((p|P) {Sign}? {DigitSeq})
 HexDigitSeq = {HexDigit}+
 FloatSuffix = [fF]
 
