@@ -20,12 +20,11 @@ parser code {:
 :};
 
 /* keywords */
-terminal INT, DOUBLE, RETURN, IF, ELSE;
-
-/* TODO: add more operators */
+terminal INT, DOUBLE, RETURN, IF, ELSE, WHILE, FOR;
 
 /* punctuators */
 terminal SEMICOLON, LPAREN, RPAREN, LBRACK, RBRACK, LBRACE, RBRACE, ASSIGN, PLUS, MUL, SUB, DIVIDE, MODULO, PLUSASSIGN, SUBASSIGN, MULASSIGN, DIVIDEASSIGN, MODULOASSIGN;
+terminal LESSTHEN, LESSTHENEQUAL, GREATERTHEN, GREATERTHENEQUAL, EQUALEQUAL, NOTEQUAL;
 /* numeric literals */
 terminal Integer INTCONST;
 terminal Double  DOUBLECONST;
@@ -43,6 +42,8 @@ non terminal List<Expr> arrayDim;
 non terminal BinaryExpr binaryExpr;
 
 precedence right ASSIGN, PLUSASSIGN, SUBASSIGN, MULASSIGN, DIVIDEASSIGN, MODULOASSIGN;
+precedence left EQUALEQUAL, NOTEQUAL;
+precedence left LESSTHEN, LESSTHENEQUAL, GREATERTHEN, GREATERTHENEQUAL;
 precedence left PLUS, SUB;
 precedence left MUL, DIVIDE, MODULO;
 
@@ -74,6 +75,8 @@ stmt ::= expr:e SEMICOLON {: RESULT = new ExprStmt(e); :}
        | IF LPAREN expr:e RPAREN stmt:s1 ELSE stmt:s2
          {: RESULT = new IfStmt(e, s1, s2); :}
        | SEMICOLON {: RESULT = new EmptyStmt(); :}
+       | WHILE LPAREN expr:e RPAREN stmt:s {: RESULT = new WhileStmt(e, s); :}
+       | FOR LPAREN expr:e1 SEMICOLON expr:e2 SEMICOLON expr:e3 RPAREN stmt:s {: RESULT = new ForStmt(e1, e2, e3, s); :}
 ;
 expr ::= INTCONST:ic {: RESULT = new IntConstExpr(ic); :}
        | DOUBLECONST:dc {: RESULT = new DoubleConstExpr(dc); :}
@@ -85,7 +88,7 @@ expr ::= INTCONST:ic {: RESULT = new IntConstExpr(ic); :}
 arrayDim ::= LBRACK expr:e RBRACK {: RESULT = new LinkedList<Expr>(); RESULT.add(e); :}
            | LBRACK expr:e RBRACK arrayDim:a {: a.add(0,e); RESULT = a; :}
 ;
-/* TODO: add more operators */
+
 binaryExpr ::= expr:e1 PLUS expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.PLUS, e2); :}
              | expr:e1 SUB expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.SUB, e2); :}
              | expr:e1 MUL expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.MUL, e2); :}
@@ -96,7 +99,13 @@ binaryExpr ::= expr:e1 PLUS expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.PL
              | expr:e1 SUBASSIGN expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.SUBASSIGN, e2); :}                
              | expr:e1 MULASSIGN expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.MULASSIGN, e2); :}   
              | expr:e1 DIVIDEASSIGN expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.DIVIDEASSIGN, e2); :}   
-             | expr:e1 MODULOASSIGN expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.MODULOASSIGN, e2); :}   
+             | expr:e1 MODULOASSIGN expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.MODULOASSIGN, e2); :}
+             | expr:e1 LESSTHEN expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.LESSTHEN, e2); :}   
+             | expr:e1 LESSTHENEQUAL expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.LESSTHENEQUAL, e2); :}   
+             | expr:e1 GREATERTHEN expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.GREATERTHEN, e2); :}                
+             | expr:e1 GREATERTHENEQUAL expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.GREATERTHENEQUAL, e2); :}   
+             | expr:e1 EQUALEQUAL expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.EQUALEQUAL, e2); :}   
+             | expr:e1 NOTEQUAL expr:e2 {: RESULT = new BinaryExpr(e1, BinaryExpr.NOTEQUAL, e2); :} 
 ;
 
 

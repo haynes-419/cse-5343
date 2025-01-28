@@ -41,27 +41,13 @@ import compiler.Compiler;
      return symbolFactory.newSymbol("EOF", EOF, new Location(filename, yyline + 1, yycolumn + 1), new Location(filename, yyline + 1, yycolumn + 1));
 %eofval}
 
-/*** TODO START: Replace these placeholders with your own definitions ***/
-
-/* Identifiers: TODO - make them general, as described in Section
- * 6.4.2.1 in the C spec. Ignore "universal-character-name" and
- * "other implementation-defined characters" mentioned in Section
- * 6.4.2.1.
- */
-Ident = {IdentNonDigit}+ ({Digit} | {Nondigit})*
+/* Identifiers */
+Ident = {IdentNonDigit} ({Digit} | {Nondigit})*
 IdentNonDigit = {Nondigit} //No definition for "universal-character-name" and "other implementation-defined characters"
-Nondigit = [A-z_]
+Nondigit = [_A-Za-z]
 Digit = [0-9]
 
-/* Integer literals: TODO - handle integer literals as described in
- * Section 6.4.4.1 of the C spec. For simplicity, do NOT
- * handle the 'long', 'long long', and 'unsigned' cases. 
- * But DO handle hexadecimal and octal constants. You do NOT need to 
- * change the scanner action associated with IntLiteral; that action
- * (later in this file) calls Integer.decode,  which should process 
- * correctly the matched literal. Assume the value fits in a Java int.
- */
-
+/* Integer literals */
 IntLiteral = {DecimalConst} | {OctalConst} | {HexConst}
 DecimalConst = {NonZeroDigit} {Digit}* //At least one nonleading 0, zero+ digits
 OctalConst = 0 {OctalDigit}* //Octal Can be Just 0 
@@ -72,16 +58,7 @@ NonZeroDigit = [1-9]
 OctalDigit = [0-7]
 HexDigit = [0-9A-Fa-f]
 
-/* Floating point literals: TODO - handle floating point literals as 
- * described in Section 6.4.4.2 of the C spec. For
- * simplicity, do NOT handle the 'long double' cases. But DO handle
- * hexadecimal floating constants, e/E and p/P notation, and f/F
- * suffixes. You do NOT need to change the scanner action associated 
- * with DoubleLiteral; that action (later in this file) calls 
- * Double.valueOf, which should process correctly the matched literal. 
- * Assume the value fits in a Java double.
- */        
-
+/* Floating point literals */        
 DoubleLiteral = {DecimalFloatConst} | {HexFloatConst}
 DecimalFloatConst = ({FracConst} {ExpoPart}? {FloatSuffix}?) | ({DigitSeq} {ExpoPart} {FloatSuffix}?) 
 HexFloatConst = ({HexPrefix} {HexFracConst} {BinaryExpPart} {FloatSuffix}?) | ({HexPrefix} {HexDigitSeq} {BinaryExpPart} {FloatSuffix}?)
@@ -94,9 +71,6 @@ BinaryExpPart = ((p|P) {Sign}? {DigitSeq})
 HexDigitSeq = {HexDigit}+
 FloatSuffix = [fF]
 
-
-/*** TODO END ***/
-
 new_line = \r|\n|\r\n;
 white_space = {new_line} | [ \t\f]
 %%
@@ -108,6 +82,8 @@ white_space = {new_line} | [ \t\f]
 "return"          { return symbol("return",      RETURN); }
 "if"              { return symbol("if",          IF); }
 "else"            { return symbol("else",        ELSE); }
+"while"           { return symbol("while",       WHILE); }
+"for"             { return symbol("for",         FOR); }
 
 /* literals */
 {IntLiteral}    { return symbol("Intconst", INTCONST, Integer.decode(yytext())); }
@@ -125,8 +101,6 @@ white_space = {new_line} | [ \t\f]
 "{"               { return symbol("{",  LBRACE); }
 "}"               { return symbol("}",  RBRACE); }
 
-/*** TODO START: Add more operators ***/
-
 "="               { return symbol("=",  ASSIGN); }
 "+"               { return symbol("+",  PLUS); }
 "*"               { return symbol("*",  MUL); }
@@ -139,7 +113,12 @@ white_space = {new_line} | [ \t\f]
 "/="              { return symbol("/=",  DIVIDEASSIGN); }
 "%="              { return symbol("%=",  MODULOASSIGN); }
 
-/*** TODO END ***/
+"<"               { return symbol("<",  LESSTHEN); }
+"<="              { return symbol("<=",  LESSTHENEQUAL); }
+">"               { return symbol(">",  GREATERTHEN); }
+">="              { return symbol(">=",  GREATERTHENEQUAL); }
+"=="              { return symbol("==",  EQUALEQUAL); }
+"!="              { return symbol("!=",  NOTEQUAL); }
 
 "/*" [^*] ~"*/" | "/*" "*"+ "/"
                   { /* ignore comments */ }
