@@ -1,12 +1,15 @@
 package ast;
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Program extends ASTNode {
     public final String funName; // function name
     public final int retType; // function return type
     public final List<Decl> dList; // list of declarations
     public final List<Stmt> sList; // list of statements
+    public static Map<String, Decl> symbolTable;
     public Program(String i, int t, List<Decl> dl, List<Stmt> sl) {
 	funName = i;
 	retType = t;
@@ -20,5 +23,17 @@ public class Program extends ASTNode {
 	for (Stmt s : sList) 
 	    s.print(ps,"  ");
 	ps.println("}");
+    }
+
+    public void check() {
+        symbolTable = new HashMap<>();
+
+        //Check Declarations
+        for (Decl d : dList) {
+            d.check();
+        }
+
+        // for (Stmt s : sList) 
+	    //     s.check();
     }
 }
