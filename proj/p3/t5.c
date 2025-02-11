@@ -1,0 +1,1 @@
+int f() { double x; int a[10][20]; return a[2][x+1]; } 

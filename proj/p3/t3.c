@@ -1,0 +1,1 @@
+int f() { int x; double y; double z; x = 1; y = 2.3; z = x + y; return 4;} 

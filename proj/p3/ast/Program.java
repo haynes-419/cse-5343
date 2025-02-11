@@ -45,7 +45,5 @@ public class Program extends ASTNode {
                 }
             }
         }
-
-        System.out.println("Symbol Table: " + symbolTable.toString());
     }
 }
