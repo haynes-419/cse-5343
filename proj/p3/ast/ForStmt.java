@@ -14,6 +14,7 @@ public class ForStmt extends Stmt {
         stmt = s;
     }
 
+    @Override
     public void print(PrintStream ps, String space){
         ps.print(space + "for (");
         expr1.print(ps);
@@ -24,5 +25,13 @@ public class ForStmt extends Stmt {
         ps.println(")");
 
         stmt.print(ps, space + " ");
+    }
+
+    @Override
+    public void check() {
+        expr1.check();
+        expr2.check();
+        expr3.check();
+        stmt.check();
     }
 }

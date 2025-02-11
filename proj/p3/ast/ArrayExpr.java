@@ -8,7 +8,10 @@ public class ArrayExpr extends Expr {
     public ArrayExpr(String i, List<Expr> d) {
 	id = i;
 	dims = d;
+	type = 3;
     }
+
+    @Override
     public void print(PrintStream ps) {
 	ps.print(id);
 	for (Expr d : dims) {
@@ -17,4 +20,13 @@ public class ArrayExpr extends Expr {
 	    ps.print("]");
 	}
     }
+
+    @Override
+	public void check() {
+		//Set Array Type
+		compiler.Compiler.setSymbolTableVariableType(this);
+
+		//Check Array Bounds - Add Symbol Table Values
+		compiler.Compiler.checkArrayAttributes(this);
+	}
 }

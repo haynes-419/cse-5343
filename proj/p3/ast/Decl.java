@@ -33,18 +33,19 @@ public class Decl extends ASTNode {
 		if(Program.symbolTable.containsKey(id)){
 			//Output Duplicate Variable Error
 			Compiler.fatalError("Duplicate Variable Declaration", Compiler.EXIT_PARSING_ERROR);
-		}else{
-			//Check Dimensions of Array
-			if(!dims.isEmpty()){
-				for(Integer dim : dims){
-					if(dim < 1){
-						Compiler.fatalError("Array Dimension Less Than 0", Compiler.EXIT_PARSING_ERROR);
-					}
+		}
+
+		//Check Dimensions if Array 
+		if(!dims.isEmpty()){
+			for(Integer dim : dims){
+				if(dim < 1){
+					Compiler.fatalError("Array Dimension Less Than 0", Compiler.EXIT_PARSING_ERROR);
 				}
 			}
-
-			//Add Symbol To Table
-			Program.symbolTable.put(id, this);
 		}
+
+		//Add Symbol To Table
+		Program.symbolTable.put(id, this);
+		
 	}
 }

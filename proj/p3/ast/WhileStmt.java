@@ -10,11 +10,17 @@ public class WhileStmt extends Stmt {
         stmt = s;
     }
 
+    @Override
     public void print(PrintStream ps, String space) {
         ps.print(space + "while (");
         expr.print(ps);
         ps.println(")");
 
         stmt.print(ps, space + " ");
+    }
+
+    @Override
+    public void check(){
+        expr.check();
     }
 }

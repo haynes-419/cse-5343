@@ -6,9 +6,16 @@ public class ExprStmt extends Stmt {
     public ExprStmt(Expr e) {
 	expr = e;
     }
+
+    @Override
     public void print(PrintStream ps, String space) { 
 	ps.print(space);
 	expr.print(ps);
 	ps.println(";");
+    }
+
+    @Override
+    public void check() {
+        expr.check();
     }
 }

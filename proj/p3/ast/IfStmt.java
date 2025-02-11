@@ -15,6 +15,8 @@ public class IfStmt extends Stmt {
 	thenStmt = ts;
 	elseStmt = es;
     }
+
+    @Override
     public void print(PrintStream ps, String space) { 
 	ps.print(space + "if (");
 	expr.print(ps);
@@ -25,4 +27,14 @@ public class IfStmt extends Stmt {
 	    elseStmt.print(ps, space + "  ");	 
 	}
     }
+
+    @Override
+	public void check() {
+		expr.check();
+		thenStmt.check();
+
+		if (elseStmt != null) {
+			elseStmt.check();	 
+		}
+	}
 }

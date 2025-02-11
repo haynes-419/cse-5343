@@ -1,0 +1,1 @@
+int f() { int a; int b; int c; int d; d = a+b+c; return d+1; }
