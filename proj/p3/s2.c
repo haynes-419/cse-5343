@@ -1,1 +1,8 @@
-int f() { int a; int b; int c; int d; d = a+b+c; return d+1; }
+int f() { 
+    int a;
+    int a;
+
+    a = 1 + 1; 
+    
+    return a; 
+}

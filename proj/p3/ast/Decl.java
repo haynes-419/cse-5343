@@ -39,7 +39,7 @@ public class Decl extends ASTNode {
 		if(!dims.isEmpty()){
 			for(Integer dim : dims){
 				if(dim < 1){
-					Compiler.fatalError("Array Dimension Less Than 0", Compiler.EXIT_PARSING_ERROR);
+					Compiler.fatalError("Array Dimension Less Than or Equal to 0", Compiler.EXIT_PARSING_ERROR);
 				}
 			}
 		}

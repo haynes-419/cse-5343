@@ -1,1 +1,8 @@
-int f() { int a[10][20]; a[2][2] = 8; return a[2][2]; }
+int f() { 
+    int a[1];
+    int b[0];
+
+    a = 1 + 1; 
+    
+    return a; 
+}
