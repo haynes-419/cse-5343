@@ -56,13 +56,13 @@ public class Compiler {
         }else if(expr instanceof ArrayExpr arrayExpr) {
             id = arrayExpr.id;
         }
-        
-        //Check Symbol is in Table
-        if(!Program.symbolTable.containsKey(id)){
-            fatalError("Variable Not Declared", EXIT_SEMANTIC_CHECKING_ERROR);
-        }
 
         Decl varDecl = Program.symbolTable.get(id);
+        
+        if(expr instanceof IdentExpr && (!varDecl.dims.isEmpty())){
+            fatalError("Array Type without Dimensions", EXIT_SEMANTIC_CHECKING_ERROR);
+        }
+
         expr.type = varDecl.type;
     }
 

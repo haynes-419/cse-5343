@@ -22,5 +22,6 @@ public class WhileStmt extends Stmt {
     @Override
     public void check(){
         expr.check();
+        stmt.check();
     }
 }

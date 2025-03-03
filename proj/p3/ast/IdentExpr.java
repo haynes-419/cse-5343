@@ -15,6 +15,11 @@ public class IdentExpr extends Expr {
 
     @Override
     public void check() {
+        //Check Symbol is in Table
+        if(!Program.symbolTable.containsKey(id)){
+            compiler.Compiler.fatalError("Variable Not Declared", compiler.Compiler.EXIT_SEMANTIC_CHECKING_ERROR);
+        }
+
         compiler.Compiler.setSymbolTableVariableType(this);
     }
 }

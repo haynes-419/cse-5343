@@ -32,7 +32,7 @@ public class Decl extends ASTNode {
 	public void check() {
 		if(Program.symbolTable.containsKey(id)){
 			//Output Duplicate Variable Error
-			Compiler.fatalError("Duplicate Variable Declaration", Compiler.EXIT_PARSING_ERROR);
+			Compiler.fatalError("Duplicate Variable Declaration: " + id, Compiler.EXIT_PARSING_ERROR);
 		}
 
 		//Check Dimensions if Array 
