@@ -57,6 +57,11 @@ public class Compiler {
             id = arrayExpr.id;
         }
         
+        //Check Symbol is in Table
+        if(!Program.symbolTable.containsKey(id)){
+            fatalError("Variable Not Declared", EXIT_SEMANTIC_CHECKING_ERROR);
+        }
+
         Decl varDecl = Program.symbolTable.get(id);
         expr.type = varDecl.type;
     }
