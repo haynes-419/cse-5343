@@ -1,0 +1,1 @@
+int f6() { int a[2][3]; int x; x = 1; a[x][x+1] = x+2; return a[1][2]; }

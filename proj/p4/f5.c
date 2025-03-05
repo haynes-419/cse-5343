@@ -1,0 +1,1 @@
+int f5() { int x; int y; int z; int w; x = 11; w = z = (x += 1) + (y = x+2); return x + y + z + w; }
