@@ -25,10 +25,8 @@ public class BlockStmt extends Stmt {
 
     @Override
     public void genCode(){
-        System.out.println("{");
         for (Stmt s : sList) 
             s.genCode();	 
-        System.out.println("}");
     }
 }
 

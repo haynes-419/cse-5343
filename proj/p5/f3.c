@@ -1,0 +1,1 @@
+int f3() { int n; int i; int res; n = 10; i = 1; res = 1; while (i <= n) { if (i % 2 == 0) res *= i; i += 1; } return res; }

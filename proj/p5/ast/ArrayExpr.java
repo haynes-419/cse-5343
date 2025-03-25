@@ -36,15 +36,14 @@ public class ArrayExpr extends Expr {
 		compiler.Compiler.checkArrayAttributes(this);
 	}
 
-	 @Override
+	@Override
     public void genCode() {
 		List<String> dimList = new LinkedList<>();
 		for (Expr d : dims) {
 			d.genCode();
 			dimList.add("[" + d.value + "]");
 		}
-
-		value = "_t" + Program.tempVarIndex2++;
+	
 		value = id;
 		for(int i = 0; i < dims.size(); i++){
 			value += (dimList.get(i));

@@ -40,13 +40,24 @@ public class IfStmt extends Stmt {
 
 	@Override
 	public void genCode() {
-		System.out.print("if (");
 		expr.genCode();
-		System.out.println(")");
-			thenStmt.genCode();	 
-		if (elseStmt != null) {
-			System.out.println("else");
-			elseStmt.genCode();	 
+		
+		String exitLabel = "_l" + Program.jumpVarIndex++;
+		String elseLabel;
+
+		if(elseStmt != null){
+			elseLabel = "_l" + Program.jumpVarIndex++;
+			System.out.println("if (!" + expr.value + ") goto " + elseLabel + ";");
+			thenStmt.genCode();
+
+			System.out.println("goto " + exitLabel + ";");
+			System.out.println(elseLabel + ":");
+			elseStmt.genCode();
+			System.out.println(exitLabel + ":");
+		}else{
+			System.out.println("if (!" + expr.value + ") goto " + exitLabel + ";");
+			thenStmt.genCode();
+			System.out.println(exitLabel + ":");
 		}
 	}
 }

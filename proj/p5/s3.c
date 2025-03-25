@@ -1,6 +1,9 @@
-int f2() {int a[10][20];
-    int x; int y; int z;
-    x = 1;
-    y = 2;
-    z = 3;
-    a[y-x][y+x] = z + 2*y; }
+int s3() {int n; int i; int res;
+    n = 10;
+    i = 1;
+    res = 1;
+    while (i <= n) {
+        res *= i;
+        i += 1;
+    }
+}

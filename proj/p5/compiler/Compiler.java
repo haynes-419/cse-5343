@@ -133,15 +133,16 @@ public class Compiler {
 		}
 
         //Add Array Access to Symbol Table
-        addTempararyVariable(aExpr);
+        aExpr.tempVar = (addTempararyVariable(aExpr));
     }
 
-    public static void addTempararyVariable(Expr expr) {
+    public static String addTempararyVariable(Expr expr) {
         //Create Temp Variable
         String varId = "_t" + Program.tempVarIndex++;
         Decl varDecl = new Decl(varId, expr.type, new LinkedList<Integer>());
         
         //Add To Symbol Table
         Program.symbolTable.put(varId, varDecl);
+        return varId;
     }
 }

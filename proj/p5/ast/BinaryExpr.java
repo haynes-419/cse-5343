@@ -104,9 +104,8 @@ public class BinaryExpr extends Expr {
 
         //Add Temporary Variables
         if(op != ASSIGN){
-            Compiler.addTempararyVariable((Expr) this);
-        }
-        
+            this.tempVar = (Compiler.addTempararyVariable((Expr) this));
+        } 
     }
 
     @Override
@@ -115,15 +114,20 @@ public class BinaryExpr extends Expr {
         List<Integer> binaryOps = Arrays.asList(PLUS, SUB, MUL, DIVIDE, MODULO, LESSTHEN, LESSTHENEQUAL, GREATERTHEN, GREATERTHENEQUAL, EQUALEQUAL, NOTEQUAL);
 
         if(op == ASSIGN){
-            expr1.genCode();
-            expr2.genCode();
+            if (expr1 instanceof ArrayExpr) {
+                expr2.genCode();
+                expr1.genCode();  
+            }else{
+                expr1.genCode();
+                expr2.genCode();
+            }
 
             System.out.println(expr1.value + "=" + expr2.value + ";");
             value = expr2.value;
         }else if(compuondExprOps.contains(op)){
+            value = this.tempVar;
             expr1.genCode();
             expr2.genCode();
-            value = "_t" + Program.tempVarIndex2++;
 
             System.out.print(value + "=" + expr1.value);
             printExpression(op);
@@ -131,9 +135,9 @@ public class BinaryExpr extends Expr {
 
             System.out.println(expr1.value + "=" + value + ";");
         }else if(binaryOps.contains(op)){
+            value = this.tempVar;
             expr1.genCode();
             expr2.genCode();
-            value = "_t" + Program.tempVarIndex2++;
 
             System.out.print(value + "=" + expr1.value);
             printExpression(op);

@@ -1,0 +1,1 @@
+int f1() { int x; int y; x = 1; if (x > 2) return 3; else { y = 4; return y; } }

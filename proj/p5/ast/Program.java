@@ -11,7 +11,7 @@ public class Program extends ASTNode {
     public final List<Stmt> sList; // list of statements
     public static Map<String, Decl> symbolTable;
     public static int tempVarIndex;
-    public static int tempVarIndex2 = 1;
+    public static int jumpVarIndex = 1;
     public Program(String i, int t, List<Decl> dl, List<Stmt> sl) {
 	funName = i;
 	retType = t;
@@ -54,6 +54,7 @@ public class Program extends ASTNode {
             d.genCode();
         for (Stmt s : sList) 
             s.genCode();
+        System.out.println(";");
         System.out.println("}");
     }
 }

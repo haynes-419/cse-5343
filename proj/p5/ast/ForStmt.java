@@ -31,20 +31,25 @@ public class ForStmt extends Stmt {
     public void check() {
         expr1.check();
         expr2.check();
-        expr3.check();
         stmt.check();
+        expr3.check();
     }
 
     @Override
     public void genCode(){
-        System.out.print("for (");
         expr1.genCode();
-        System.out.print("; ");
-        expr2.genCode();
-        System.out.print("; ");
-        expr3.genCode();
-        System.out.println(")");
+        
+        String startLabel = "_l" + Program.jumpVarIndex++;
+        String exitLabel = "_l" + Program.jumpVarIndex++;
 
+        System.out.println(startLabel + ":");
+        expr2.genCode();
+        System.out.println("if (! " + expr2.value + ") goto " + exitLabel + ";");
+        
         stmt.genCode();
+        expr3.genCode();
+
+        System.out.println("goto " + startLabel + ";");
+        System.out.println(exitLabel + ":");
     }
 }

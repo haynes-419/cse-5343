@@ -1,10 +1,7 @@
-double f() {
-    int x;
-    int y;
-    
-    x = 1 + 2;
-
-    x += 2;
-
-    return x;
+double s1() {
+    int x; int y; int z;
+    x = 1;
+    y = 2;
+    z = 3;
+    if (x+y > z) z=x+y;
 }

@@ -27,10 +27,14 @@ public class WhileStmt extends Stmt {
 
     @Override
     public void genCode() {
-        System.out.print("while (");
-        expr.genCode();
-        System.out.println(")");
+        String startLabel = "_l" + Program.jumpVarIndex++;
+        String exitLabel = "_l" + Program.jumpVarIndex++;
 
+        System.out.println(startLabel + ":");
+        expr.genCode();
+        System.out.println("if (! " + expr.value + ") goto " + exitLabel + ";");
         stmt.genCode();
+        System.out.println("goto " + startLabel + ";");
+        System.out.println(exitLabel + ":");
     }
 }
