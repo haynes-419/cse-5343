@@ -1,8 +1,11 @@
 package compiler;
 
-import java.io.*;
-import parser.ParserWrapper;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 import ast.Program;
+import parser.ParserWrapper;
 
 public class Compiler {
     // Process return codes
@@ -24,7 +27,9 @@ public class Compiler {
         }
 	
 	// Simplistic pretty printing of the AST
-	astRoot.print(System.out);
+	//astRoot.print(System.out);
+
+    astRoot.cfgAnalysis();
 	
 	System.exit(EXIT_SUCCESS);
     }

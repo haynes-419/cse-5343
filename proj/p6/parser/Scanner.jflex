@@ -84,6 +84,7 @@ white_space = {new_line} | [ \t\f]
 "else"            { return symbol("else",        ELSE); }
 "while"           { return symbol("while",       WHILE); }
 "for"             { return symbol("for",         FOR); }
+"goto"            { return symbol("goto",        GOTO); }
 
 /* literals */
 {IntLiteral}    { return symbol("Intconst", INTCONST, Integer.decode(yytext())); }
@@ -94,12 +95,14 @@ white_space = {new_line} | [ \t\f]
 
 /* punctuators */
 ";"               { return symbol(";",  SEMICOLON); }
+":"               { return symbol(":",  COLON); }
 "("               { return symbol("(",  LPAREN); }
 ")"               { return symbol(")",  RPAREN); }
 "["               { return symbol("[",  LBRACK); }
 "]"               { return symbol("]",  RBRACK); }
 "{"               { return symbol("{",  LBRACE); }
 "}"               { return symbol("}",  RBRACE); }
+"!"               { return symbol("!",  NOT); }
 
 "="               { return symbol("=",  ASSIGN); }
 "+"               { return symbol("+",  PLUS); }

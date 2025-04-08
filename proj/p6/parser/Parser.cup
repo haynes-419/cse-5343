@@ -20,10 +20,10 @@ parser code {:
 :};
 
 /* keywords */
-terminal INT, DOUBLE, RETURN, IF, ELSE, WHILE, FOR;
+terminal INT, DOUBLE, RETURN, IF, ELSE, WHILE, FOR, GOTO;
 
 /* punctuators */
-terminal SEMICOLON, LPAREN, RPAREN, LBRACK, RBRACK, LBRACE, RBRACE, ASSIGN, PLUS, MUL, SUB, DIVIDE, MODULO, PLUSASSIGN, SUBASSIGN, MULASSIGN, DIVIDEASSIGN, MODULOASSIGN;
+terminal SEMICOLON, COLON, NOT, LPAREN, RPAREN, LBRACK, RBRACK, LBRACE, RBRACE, ASSIGN, PLUS, MUL, SUB, DIVIDE, MODULO, PLUSASSIGN, SUBASSIGN, MULASSIGN, DIVIDEASSIGN, MODULOASSIGN;
 terminal LESSTHEN, LESSTHENEQUAL, GREATERTHEN, GREATERTHENEQUAL, EQUALEQUAL, NOTEQUAL;
 /* numeric literals */
 terminal Integer INTCONST;
@@ -77,6 +77,8 @@ stmt ::= expr:e SEMICOLON {: RESULT = new ExprStmt(e); :}
        | SEMICOLON {: RESULT = new EmptyStmt(); :}
        | WHILE LPAREN expr:e RPAREN stmt:s {: RESULT = new WhileStmt(e, s); :}
        | FOR LPAREN expr:e1 SEMICOLON expr:e2 SEMICOLON expr:e3 RPAREN stmt:s {: RESULT = new ForStmt(e1, e2, e3, s); :}
+       | GOTO IDENT:i SEMICOLON {: RESULT = new GotoStmt(i); :}
+       | IDENT:i COLON {: RESULT = new Label(i); :}
 ;
 expr ::= INTCONST:ic {: RESULT = new IntConstExpr(ic); :}
        | DOUBLECONST:dc {: RESULT = new DoubleConstExpr(dc); :}
@@ -84,6 +86,7 @@ expr ::= INTCONST:ic {: RESULT = new IntConstExpr(ic); :}
        | IDENT:i arrayDim:a {: RESULT = new ArrayExpr(i, a); :}
        | LPAREN expr:e RPAREN {: RESULT = e; :}
        | binaryExpr:e {: RESULT = e; :}
+       | NOT expr:e {: RESULT = new NotExpr(e); :}
 ;
 arrayDim ::= LBRACK expr:e RBRACK {: RESULT = new LinkedList<Expr>(); RESULT.add(e); :}
            | LBRACK expr:e RBRACK arrayDim:a {: a.add(0,e); RESULT = a; :}
