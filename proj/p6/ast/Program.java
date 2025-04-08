@@ -3,6 +3,7 @@ package ast;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Program extends ASTNode {
 
@@ -14,6 +15,8 @@ public class Program extends ASTNode {
     private CFGNode currentNode; // current CFG node
     private int edges; // number of edges in the CFG
     private List<String> labesToAdd;
+    private List<Map.Entry<CFGNode, CFGNode>> retreatingEdgeList;
+    private List<CFGNode> naturalLoopList;
 
     public Program(String i, int t, List<Decl> dl, List<Stmt> sl) {
         funName = i;
@@ -24,6 +27,8 @@ public class Program extends ASTNode {
         edges = 0;
         currentNode = null;
         labesToAdd = new ArrayList<>();
+        retreatingEdgeList = new ArrayList<>();
+        naturalLoopList = new ArrayList<>();
     }
 
     public void print(PrintStream ps) {
@@ -38,8 +43,6 @@ public class Program extends ASTNode {
     }
 
     public void cfgAnalysis() {
-        System.out.println(sList);
-
         //Create Entry and Exit Node
         CFGNode entry = new CFGNode();
         CFGNode exit = new CFGNode();
@@ -118,6 +121,16 @@ public class Program extends ASTNode {
             }
             i++;
         }
+
+        //Depth First Search of CFG For Back Edges
+        DFS(entry);
+
+        //Depth First Search For Natural Loops
+        for(Map.Entry edgePair : retreatingEdgeList){
+            reverseDFS(edgePair);
+        }
+        
+        
         
 
         printData();
@@ -131,7 +144,7 @@ public class Program extends ASTNode {
 
 
         if (s instanceof Label|| jumpFlag || cfg.size() == 1) {
-            if(sList.size() > index + 1 && sList.get(index + 1) instanceof Label) {
+            if(sList.size() > index + 1 && s instanceof Label && sList.get(index + 1) instanceof Label) {
                 labesToAdd.add( ((Label) sList.get(index)).id);
                 return jumpFlag;
             }
@@ -155,8 +168,43 @@ public class Program extends ASTNode {
         return jumpFlag;
     }
 
+    private void DFS(CFGNode node) {
+        node.color = "gray";
 
+        for (CFGNode m : node.successors) {
+            if(m.color.equals("white")) {
+                DFS(m);
+            }else if(m.color.equals("gray")) {
+                retreatingEdgeList.add(Map.entry(node, m));
+            }
+        }
 
+        node.color = "black";
+    }
+
+    private void reverseDFS(Map.Entry<CFGNode, CFGNode> nodePair) {
+        CFGNode n = nodePair.getKey();
+        CFGNode h = nodePair.getValue();
+
+        h.colorNatualLoop = "gray";
+
+        naturalLoopList.add(h);
+        DFSNaturalLoop(n);
+    }
+
+    private void DFSNaturalLoop(CFGNode node) {
+        node.colorNatualLoop = "gray";
+
+        for (CFGNode m : node.successors) {
+            if(m.colorNatualLoop.equals("white")) {
+                DFSNaturalLoop(m);
+            }else if(m.colorNatualLoop.equals("gray")) {
+                naturalLoopList.add(m);
+            }
+        }
+
+        node.colorNatualLoop = "black";
+    }
 
 
 
@@ -165,18 +213,18 @@ public class Program extends ASTNode {
 
     private void printData() {
         //Print CFG Nodes
-        for (int j = 0; j < cfg.size(); j++) {
-            CFGNode node = cfg.get(j);
-            System.out.println("Node " + j + ": " + node);
-            System.out.println("Label: " + node.labelID);
-            System.out.println("Goto: " + node.gotoID);
-            for (Stmt s : node.statements) {
-                System.out.println(s.getClass().getName());
-            }
-            System.out.println("Successors: " + node.successors);
-            System.out.println("Predecessors: " + node.predecessors);
-            System.out.println();
-        }
+        // for (int j = 0; j < cfg.size(); j++) {
+        //     CFGNode node = cfg.get(j);
+        //     System.out.println("Node " + j + ": " + node);
+        //     System.out.println("Label: " + node.labelID);
+        //     System.out.println("Goto: " + node.gotoID);
+        //     for (Stmt s : node.statements) {
+        //         System.out.println(s.getClass().getName());
+        //     }
+        //     System.out.println("Successors: " + node.successors);
+        //     System.out.println("Predecessors: " + node.predecessors);
+        //     System.out.println();
+        // }
 
         //Calculate Edges
         for (CFGNode node : cfg) {
@@ -186,5 +234,7 @@ public class Program extends ASTNode {
         //Print Proper Output
         System.out.println("CFG NODES: " + cfg.size());
         System.out.println("CFG EDGES: " + edges);
+        System.out.println("BACK EDGES: " + retreatingEdgeList.size());
+        System.out.println("NODES IN LOOPS: " + naturalLoopList.size());
     }
 }

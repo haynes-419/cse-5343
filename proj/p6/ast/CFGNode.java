@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 public class CFGNode {
+    public String color;
+    public String colorNatualLoop;
     public Set<String> labelID;
     public Set<String> gotoID;
     public Set<CFGNode> successors;
@@ -13,6 +15,8 @@ public class CFGNode {
     public List<Stmt> statements;
 
     public CFGNode() {
+        this.color = "white";
+        this.colorNatualLoop = "white";
         this.labelID = new HashSet<>();
         this.gotoID = new HashSet<>();
         this.successors = new HashSet<>();
