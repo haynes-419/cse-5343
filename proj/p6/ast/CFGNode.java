@@ -1,6 +1,7 @@
 package ast;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -17,10 +18,10 @@ public class CFGNode {
     public CFGNode() {
         this.color = "white";
         this.colorNatualLoop = "white";
-        this.labelID = new HashSet<>();
-        this.gotoID = new HashSet<>();
-        this.successors = new HashSet<>();
-        this.predecessors = new HashSet<>();
+        this.labelID = new LinkedHashSet<>();
+        this.gotoID = new LinkedHashSet<>();
+        this.successors = new LinkedHashSet<>();
+        this.predecessors = new LinkedHashSet<>();
         this.statements = new LinkedList<>();
     }
 }

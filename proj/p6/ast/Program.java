@@ -2,8 +2,11 @@ package ast;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Program extends ASTNode {
 
@@ -16,7 +19,7 @@ public class Program extends ASTNode {
     private int edges; // number of edges in the CFG
     private List<String> labesToAdd;
     private List<Map.Entry<CFGNode, CFGNode>> retreatingEdgeList;
-    private List<CFGNode> naturalLoopList;
+    private Set<CFGNode> naturalLoopList;
 
     public Program(String i, int t, List<Decl> dl, List<Stmt> sl) {
         funName = i;
@@ -28,7 +31,7 @@ public class Program extends ASTNode {
         currentNode = null;
         labesToAdd = new ArrayList<>();
         retreatingEdgeList = new ArrayList<>();
-        naturalLoopList = new ArrayList<>();
+        naturalLoopList = new LinkedHashSet<>();
     }
 
     public void print(PrintStream ps) {
@@ -80,7 +83,6 @@ public class Program extends ASTNode {
 
        //Add Edges
         i = 0;
-
         while(i < cfg.size()) {
             CFGNode node = cfg.get(i);
 
@@ -129,10 +131,6 @@ public class Program extends ASTNode {
         for(Map.Entry edgePair : retreatingEdgeList){
             reverseDFS(edgePair);
         }
-        
-        
-        
-
         printData();
     }
 
@@ -194,22 +192,15 @@ public class Program extends ASTNode {
 
     private void DFSNaturalLoop(CFGNode node) {
         node.colorNatualLoop = "gray";
+        naturalLoopList.add(node);
 
-        for (CFGNode m : node.successors) {
+        for (CFGNode m : node.predecessors) {
             if(m.colorNatualLoop.equals("white")) {
                 DFSNaturalLoop(m);
-            }else if(m.colorNatualLoop.equals("gray")) {
-                naturalLoopList.add(m);
             }
         }
-
         node.colorNatualLoop = "black";
     }
-
-
-
-
-
 
     private void printData() {
         //Print CFG Nodes
